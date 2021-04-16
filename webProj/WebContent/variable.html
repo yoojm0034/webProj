@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>variable.html</title>
+	<style>
+		tr:nth-last-of-type(2n) {
+			background-color: antiquewhite;
+		}
+		tr:hover {
+			background-color: aquamarine;
+		}
+	
+	</style>
+</head>
+
+<body>
+
+	<!-- <script src='script/obj.js'></script>
+	<script src="script/obj2.js"></script> -->
+	<script>
+		var gugudanTb = '<table border="1">';
+		for (var i = 2; i < 10; i++) {
+			
+			for (var j = 1; j < 10; j++) {
+				gugudanTb += '<tr><th>' + i+'*'+j
+					+'</th><th>'+'='+'</th><th>'+i*j+'</th></tr>'
+					
+			}
+		}
+		
+		gugudanTb += '</table>';
+		document.write(gugudanTb);
+	</script>
+</body>
+
+</html>
