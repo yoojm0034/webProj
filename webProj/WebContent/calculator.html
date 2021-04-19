@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div.container {
+            display: flex;
+            flex-wrap: wrap;
+            width: 300px;
+            height: 350px;
+            background-color: rgb(124, 136, 136);
+            justify-content: space-around;
+        }
+
+        .container>div {
+            background-color: bisque;
+            width: 50px;
+            height: 50px;
+            margin: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            line-height: 50px;
+            border-radius: 4px;
+        }
+
+        .container>div:hover {
+            cursor: pointer;
+        }
+
+        div#display {
+            width: 190px;
+            padding-right: 10px;
+            text-align: right;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div id='display'>0</div>
+        <div>C</div>
+        <div>1</div>
+        <div>2</div>
+        <div>3</div>
+        <div>*</div>
+        <div>4</div>
+        <div>5</div>
+        <div>6</div>
+        <div>/</div>
+        <div>7</div>
+        <div>8</div>
+        <div>9</div>
+        <div>%</div>
+        <div>0</div>
+        <div>+</div>
+        <div>-</div>
+        <div>=</div>
+    </div>
+
+    <script>
+        var dp = document.getElementById('display')
+        var buttons = document.querySelectorAll('div.container>div');
+
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].onclick = clickEvent;
+        }
+        var firstVal = 0,
+            lastVal = 0;
+            operator = null;
+
+        function clickEvent() {
+            var touchVal = this.innerHTML;
+            // dp.innerHTML = parseInt(touchVal);
+
+            if (isNaN(touchVal)) { //문자 입력시!!
+                if (touchVal == "C") {
+                    firstVal = 0;
+                    lastVal = 0;
+                    operator = null;
+                } else if (touchVal != "=") { //연산자입력시!!
+                    operator = touchVal;
+                } else { //equal일때
+                    if (operator == '+') {
+                        dp.innerHTML = (parseInt(firstVal) + parseInt(lastVal))
+
+                    } else if (operator == '-') {
+                        dp.innerHTML = (firstVal - lastVal)
+
+                    } else if (operator == '*') {
+                        dp.innerHTML = (firstVal * lastVal)
+
+                    } else if (operator == '/') {
+                        dp.innerHTML = (firstVal / lastVal)
+
+                    } else if (operator == '%') {
+                        dp.innerHTML = (firstVal % lastVal)
+
+                    }
+                    firstVal = dp.innerHTML;
+                    lastVal = 0;
+                    
+                    return; //function에서 return을만나면 종료;
+                }
+
+            } else { //숫자가 들어올때!!
+                if (operator) { //lastVal
+                    lastVal += touchVal;
+                } else { //firstVal
+                    firstVal += touchVal;
+                }
+            }
+            dp.innerHTML = parseInt(firstVal) + operator + (lastVal == 0 ? '' : parseInt(lastVal));
+
+        }
+    </script>
+</body>
+
+</html>
