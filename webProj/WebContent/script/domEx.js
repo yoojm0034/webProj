@@ -61,7 +61,8 @@ function deleteRow() {
 
 function modifyFnc() {
 	var idVal = this.innerHTML;
-	var nameVal = this.previousSibling.innerHTML;
+	var nameVal = this.previousSibling.firstChild.innerHTML;
+    console.log(nameVal);
 	var scoreVal = this.nextSibling.innerHTML;
 	var genVal = this.parentNode.childNodes[3].innerHTML;
 
@@ -107,13 +108,18 @@ function saveBtnFnc() {
 	tr.appendChild(td);
 	document.getElementById('tbl').appendChild(tr);
 }
+//수정버튼 클릭시..
 function modifyBtnFnc() {
+	var id = document.getElementById('id').value; //id로 tr찾아오려고.
+	//사용자가 변경한 값을 반영..
+	var name = document.getElementById('name').value;
+	var score = document.getElementById('score').value;
+	var gender = document.querySelector('input[name="gender"]:checked').value;
 
-	var id = document.getElementById('id').value;
-	console.log(id);
+	
 	var targetTr = document.getElementById(id)
-	console.log(targetTr);
-	targetTr.children[0].innerHTML = document.getElementById('name').value;
-	targetTr.children[2].innerHTML = document.getElementById('score').value;
-	targetTr.children[3].innerHTML = document.querySelector('input[name="gender"]:checked').value;
+	targetTr.children[0].innerHTML = '<a href="dom.jsp?name='+name+'&id='+id+'&score='+score+'&gender='+gender+'">name</a>';
+	
+	targetTr.children[2].innerHTML = score;
+	targetTr.children[3].innerHTML = gender;
 }

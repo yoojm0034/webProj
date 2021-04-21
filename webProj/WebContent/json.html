@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>json.html</title>
+</head>
+
+<body>
+    <script>
+        var myObj = {
+            name: "John",
+            age: 31,
+            city: "New York"
+        };
+        //JSON => javascript object notation
+        var jsonObj = '{"name": "John","age": "31","city":"New York"}';
+        //JSON => Object
+        var data = JSON.parse(jsonObj);
+        //Object => JSON
+        var json = JSON.stringify(data);
+        console.log(json);
+        //서버에서 받아온 데이터
+        var mockData = '[{"id":1,"first_name":"Seumas","last_name":"Haversum","email":"shaversum0@artisteer.com","gender":"Genderfluid","ip_address":"166.54.205.110"},{"id":19,"first_name":"Leonhard","last_name":"Juckes","email":"ljuckesi@illinois.edu","gender":"Polygender","ip_address":"243.21.156.118"},{"id":20,"first_name":"Hallie","last_name":"Keston","email":"hkestonj@google.es","gender":"Genderfluid","ip_address":"7.69.251.133"}]'
+        var mockObj = JSON.parse(mockData);
+
+        var table = document.createElement('table');
+        table.setAttribute('border', '1');
+        var cap = document.createElement('cation');
+        cap.innerHTML = '사원리스트';
+        table.appendChild(cap);
+        for(var i=0; i<mockObj.length; i++) {
+            var tr = document.createElement('tr');
+            for(var field in mockObj[i]) {
+                var td = document.createElement('td');
+                var text = document.createTextNode(mockObj[i][field]);
+                td.appendChild(text);
+                tr.appendChild(td);
+            }
+            table.appendChild(tr);
+        }
+        document.body.appendChild(table);
+        console.log(mockObj)
+    </script>
+</body>
+
+</html>
