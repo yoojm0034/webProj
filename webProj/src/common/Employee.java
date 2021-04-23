@@ -6,7 +6,7 @@ public class Employee {
 	private String lastName;
 	private String email;
 	private String hireDate;
-	private int salary;
+	private String salary;
 	private String jobId;
 	
 	
@@ -34,10 +34,10 @@ public class Employee {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public int getSalary() {
+	public String getSalary() {
 		return salary;
 	}
-	public void setSalary(int salary) {
+	public void setSalary(String salary) {
 		this.salary = salary;
 	}
 	public String getJobId() {

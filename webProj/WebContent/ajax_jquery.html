@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ajax_jquery.html</title>
+<script src='js/jquery-3.6.0.min.js'></script>
+<style>
+table>:first-child {
+	text-align: center;
+	font-weight: bold;
+}
+</style>
+<script>
+        $(document).on("DOMContentLoaded", function () {
+            var frm = $('#frm')
+            frm.on('submit', function (e) {
+                e.preventDefault();
+                console.log(e);
+				
+                //javascript => jQuery	
+                var fn = $('#first_name').val(); //id값이 first_name의 element의 value값
+                var ln = $('#last_name').val();
+                var em = $('#email').val();
+                var sa = $('#salary').val();
+                var ji = $('#job_id').val();
+                var hd = $('#hire_date').val();
+                var data = 'first_name=' + fn + '&last_name=' + ln + '&email=' + em + '&salary=' +
+                    sa + '&job_id=' + ji + '&hire_date=' + hd;
+                
+                $.ajax({
+                	url: 'empList.do',
+                	type: 'post',
+                	data: data,
+                	success: function(result) {
+ 						console.log(result)	
+                		 var obj = JSON.parse(result);
+                         var tr = $('<tr />');
+                         for (var field in obj) {
+                             var td = $('<td />').html(obj[field]);
+                             tr.append(td);
+                         }
+                         var td = $('<td />');
+                         var btns = $('<button />').html('삭제');
+                         td.append(btns);
+                         btns.onclick = function() {
+                             this.parentNode.parentNode.remove();
+                         };
+                         tr.append(td);
+                         table.append(tr);
+                	},
+                	error: function(reject) {
+                		console.error(`error: ${reject.status}`);
+                	}
+                });//end of .ajax();
+                
+            });//end of frm.submit();
+        });  //end of document.event();
+</script>
+</head>
+
+<body>
+	<form id="frm" action="empList.do" method="POST">
+		FirstName: <input type="text" name="first_name" id="first_name"><br>
+		LastName: <input type="text" name="last_name" id="last_name"><br>
+		Email: <input type="text" name="email" id="email"><br>
+		Salary: <input type="text" name="salary" id="salary"><br>
+		Job_id: <input type="text" name="job_id" id="job_id"><br>
+		Hire_date:&nbsp;<input type="date" name="hire_date" id="hire_date"><br>
+		<input type="submit" value="저장"> <input type="reset"
+			value="취소">
+	</form>
+	<div id="show"></div>
+	<script>
+        var title = {
+            employee_id: '사원번호',
+            first_name: '이름',
+            last_name: '성',
+            email: '이메일주소',
+            salary: '급여',
+            job_id: '직무',
+            hire_date: '입사일자',
+            util: '기능'
+        };
+        var table = $('<table id="tbl" />');       //document.createElement('table');
+        table.attr('border', '1');
+		//타이틀..
+        var tr = $('<tr />');              //document.createElement('tr');
+        for (var field in title) {
+            var td = $('<td />').html(title[field]);
+            tr.append(td);
+        }
+        table.append(tr);
+        var xhtp = new XMLHttpRequest();
+        //readyState: 1 => connection, 2=>request received, 3=> processing request 4=> request finished response ready;
+        xhtp.onreadystatechange = function () {
+            // console.log(xhtp.readyState, xhtp.status, xhtp.responseText);
+            if (xhtp.readyState == 4 && xhtp.status == 200) {
+                var show = document.getElementById('show')
+                var obj = JSON.parse(xhtp.responseText);
+                console.log(obj);
+
+                //table tr td => div.appendchild();
+
+                for (var data of obj) {
+                    var tr = $('<tr />');
+                    for (var field in data) {
+                        var td = $('<td />').html(data[field]);
+                        //var text = document.createTextNode(data[field]);
+                        //td.appendChild(text);
+                        tr.append(td);
+                    }
+                    var td = $('<td />');
+                    var btns = $('<button />').html('삭제');
+                    td.append(btns);
+                    btns.onclick = function() {
+                    	
+                    	this.parentNode.parentNode.remove();
+                        
+                    };
+                    tr.append(td);
+                    table.append(tr);
+
+                }
+                $('#show').append(table);
+                //document.getElementById('show').append(table);
+            }
+        }
+
+        xhtp.open('get', 'empList.do?dept=50');
+        xhtp.send();
+    </script>
+</body>
+
+</html>

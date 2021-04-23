@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>exam01.html</title>
+</head>
+<body>
+    <form action="">
+        이름: <input type="text" name="name" id="name"><br>
+        나이: <input type="text" name="age" id="age"><br>
+        전화번호: <input type="tel" name="tel" id="tel"><br>
+        <input type="button" onclick="bt()" value="등록">
+
+
+    </form>
+    <script>
+        function bt(){
+            
+            var ary = [];
+            
+            var name = document.getElementById('name').textContent;
+            var age = document.getElementById('age').textContent;
+            var tel = document.getElementById('tel').textContent;
+            ary.push('name:'+name);
+            ary.push('age:'+age);
+            ary.push('tel'+tel);
+            
+            console.log(ary);
+        }
+    </script>
+</body>
+</html>

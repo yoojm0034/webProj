@@ -33,8 +33,8 @@ public class EmpServlet extends HttpServlet {
 		int cnt = 0;
 		for (Employee emp : list) {
 			jsonData += ("{\"empID\":\"" + emp.getEmployeeId() + "\", \"fName\":\"" + emp.getFirstName()
-					+ "\", \"iName\":\"" + emp.getLastName() + "\", \"email\":\"" + emp.getEmail() + "\", \"salary\":\""
-					+ emp.getSalary() + "\"}");
+					+ "\", \"lName\":\"" + emp.getLastName() + "\", \"email\":\"" + emp.getEmail() + "\", \"salary\":\""
+					 +emp.getSalary() + "\", \"job_id\":\"" + emp.getJobId() + "\", \"hire_date\":\"" + emp.getHireDate() + "\"}");
 			if (++cnt == list.size()) {
 				continue;
 			}
@@ -46,20 +46,31 @@ public class EmpServlet extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String firstName = req.getParameter("first_name");
 		String lastName = req.getParameter("last_name");
 		String email = req.getParameter("email");
-		String hireDate = req.getParameter("hire_date");
+		String salary = req.getParameter("salary");
 		String jobId = req.getParameter("job_id");
-		
+		String hireDate = req.getParameter("hire_date");
+	
 		Employee emp = new Employee();
+		emp.setFirstName(firstName);
 		emp.setLastName(lastName);
 		emp.setEmail(email);
-		emp.setHireDate(hireDate);
+		emp.setSalary(salary);
 		emp.setJobId(jobId);
-		
+		emp.setHireDate(hireDate);
 		EmpDAO dao = new EmpDAO();
-		dao.insertEmp(emp);
-		
-		resp.getWriter().print("<h1>success</h1>");
+		Employee empl = dao.insertEmpBySeq(emp);
+		// {"eId":"?", "fName":"?"..}
+		PrintWriter out = resp.getWriter();
+		out.print("{\"employee_id\":\"" + empl.getEmployeeId() + "\"," //
+				+ "\"first_name\":\"" + empl.getFirstName() + "\"," //
+				+ "\"last_name\":\"" + empl.getLastName() + "\"," //
+				+ "\"email\":\"" + empl.getEmail() + "\"," //
+				+ "\"salary\":\"" + empl.getSalary() + "\"," //
+				+ "\"job_id\":\"" + empl.getJobId() + "\"," //
+				+ "\"hire_date\":\"" + empl.getHireDate() + "\"" //
+				+ "}");
 	}
 }

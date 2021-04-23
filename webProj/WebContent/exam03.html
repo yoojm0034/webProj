@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>exam03</title>
+</head>
+<body>
+    <div id="show"></div>
+    <script>
+        var xhtp = new XMLHttpRequest();
+        xhtp.open('get', 'employees.xml');
+        xhtp.send();
+        xhtp.onreadystatechange = function() {
+            if(xhtp.readyState==4 && xhtp.status==200) {
+                var doc = xhtp.responseXML;
+                var records = doc.getElementsByTagName('record');
+                
+                
+                for(var i=0; i<records.length; i++) {
+                    var ul = document.createElement('ul');
+                    ul.innerHTML='정보'
+                    for(var j=0; j<records[i].childNodes.length; j++) {
+                       var li = document.createElement('li');
+                       var text = document.createTextNode(records[i].childNodes[j].textContent);
+                       li.appendChild(text);
+                       ul.appendChild(li);
+                        
+                    }
+                   
+                    document.getElementById('show').appendChild(ul);
+
+
+                  
+                }
+                
+            }
+        }
+
+    </script>
+</body>
+</html>

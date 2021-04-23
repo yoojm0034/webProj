@@ -20,8 +20,8 @@ public class EmpDAO {
 		Employee empl = new Employee(); 
 		
 		String sql1 = "select employees_seq.nextval from dual";
-		String sql2 = "insert into emp_temp (employee_id, last_name, email, hire_date, job_id) VALUES"
-				+ "(?, ?, ?, ?, ?)";
+		String sql2 = "insert into emp_temp (employee_id, first_name, last_name, email, hire_date, job_id, salary, department_id) VALUES"
+				+ "(?, ?, ?, ?, ?, ?, ?, 50)";
 		try {
 			int empId = 0;
 			stmt = conn.createStatement();
@@ -31,19 +31,23 @@ public class EmpDAO {
 			}
 			psmt = conn.prepareStatement(sql2);
 			psmt.setInt(1, empId);
-			psmt.setString(2, emp.getLastName());
-			psmt.setString(3, emp.getEmail());
-			psmt.setString(4, emp.getHireDate());
-			psmt.setString(5, emp.getJobId());
+			psmt.setString(2, emp.getFirstName());
+			psmt.setString(3, emp.getLastName());
+			psmt.setString(4, emp.getEmail());
+			psmt.setString(5, emp.getHireDate());
+			psmt.setString(6, emp.getJobId());
+			psmt.setString(7, emp.getSalary());
 			
 			int r = psmt.executeUpdate();
 			System.out.println(r + "건 입력됨.");
 			//입력한 값 반환해주기 위해서
 			empl.setEmployeeId(empId);
 			empl.setEmail(emp.getEmail());
+			empl.setFirstName(emp.getFirstName());
 			empl.setLastName(emp.getLastName());
 			empl.setHireDate(emp.getHireDate());
 			empl.setJobId(emp.getJobId());
+			empl.setSalary(emp.getSalary());
 			
 		} catch (SQLException e) {
 
@@ -72,7 +76,7 @@ public class EmpDAO {
 					e.printStackTrace();
 				}
 			}
-		}return empl ;
+		}return empl ;//여기서 시작
 
 	}
 
@@ -134,7 +138,9 @@ public class EmpDAO {
 				emp.setFirstName(rs.getString("first_name"));
 				emp.setLastName(rs.getString("last_name"));
 				emp.setEmail(rs.getString("email"));
-				emp.setSalary(rs.getInt("salary"));
+				emp.setSalary(rs.getString("salary"));
+				emp.setJobId(rs.getString("job_id"));
+				emp.setHireDate(rs.getString("hire_date"));
 
 				employees.add(emp);
 
@@ -187,7 +193,7 @@ public class EmpDAO {
 				emp.setFirstName(rs.getString("first_name"));
 				emp.setLastName(rs.getString("last_name"));
 				emp.setEmail(rs.getString("email"));
-				emp.setSalary(rs.getInt("salary"));
+				emp.setSalary(rs.getString("salary"));
 
 				employees.add(emp);
 

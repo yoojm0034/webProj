@@ -6,19 +6,94 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ajax.html</title>
+    <style>
+        table>:first-child {
+            text-align: center;
+            font-weight: bold;
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var frm = document.getElementById('frm');
+            frm.addEventListener('submit', function (e) {
+                e.preventDefault();
+                console.log(e);
+
+                var fn = document.getElementById('first_name').value;
+                var ln = document.getElementById('last_name').value;
+                var em = document.getElementById('email').value;
+                var sa = document.getElementById('salary').value;
+                var ji = document.getElementById('job_id').value;
+                var hd = document.getElementById('hire_date').value;
+                var data = 'first_name=' + fn + '&last_name=' + ln + '&email=' + em + '&salary=' +
+                    sa + '&job_id=' + ji + '&hire_date=' + hd;
+
+                var xhtp = new XMLHttpRequest();
+                xhtp.open('post', 'empList.do');
+                xhtp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                xhtp.send(data);
+
+                xhtp.onreadystatechange = function () {
+                    if (xhtp.readyState == 4 && xhtp.status == 200) {
+                        var obj = JSON.parse(xhtp.responseText);
+
+                        var tr = document.createElement('tr');
+                        for (var field in obj) {
+                            var td = document.createElement('td');
+                            var text = document.createTextNode(obj[field]);
+                            td.appendChild(text);
+                            tr.appendChild(td);
+                        }
+                        var td = document.createElement('td');
+                        var btns = document.createElement('button');
+                        var text =document.createTextNode('삭제');
+                        btns.appendChild(text)
+                        td.appendChild(btns);
+                        btns.onclick = function() {
+                            this.parentNode.parentNode.remove();
+                        };
+                        tr.appendChild(td);
+                        table.appendChild(tr);
+                    }
+
+                }
+            });
+        });
+    </script>
 </head>
 
 <body>
-    <form action="empList.do" method="POST">
-        LastName: <input type="text" name="last_name" id=""><br>
-        Email: <input type="text" name="email" id=""><br>
-        Hire_date: <input type="text" name="hire_date" id=""><br>
-        Job_id: <input type="text" name="job_id" id=""><br>
-        <input type="submit" value="저장">
-        <input type="reset" value="취소">
+    <form id="frm" action="empList.do" method="POST">
+        FirstName: <input type="text" name="first_name" id="first_name"><br>
+        LastName: <input type="text" name="last_name" id="last_name"><br>
+        Email: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="email" id="email"><br>
+        Salary:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="salary" id="salary"><br>
+        Job_id: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="job_id" id="job_id"><br>
+        Hire_date:&nbsp;<input type="date" name="hire_date" id="hire_date"><br>
+        <input type="submit" value="저장"> <input type="reset" value="취소">
     </form>
     <div id="show"></div>
     <script>
+        var title = {
+            employee_id: '사원번호',
+            first_name: '이름',
+            last_name: '성',
+            email: '이메일주소',
+            salary: '급여',
+            job_id: '직무',
+            hire_date: '입사일자',
+            util: '기능'
+        };
+        var table = document.createElement('table');
+
+        var tr = document.createElement('tr');
+        for (var field in title) {
+            var td = document.createElement('td');
+            var text = document.createTextNode(title[field]);
+            td.appendChild(text);
+            tr.appendChild(td);
+        }
+        table.appendChild(tr);
         var xhtp = new XMLHttpRequest();
         //readyState: 1 => connection, 2=>request received, 3=> processing request 4=> request finished response ready;
         xhtp.onreadystatechange = function () {
@@ -29,7 +104,7 @@
                 console.log(obj);
 
                 //table tr td => div.appendchild();
-                var table = document.createElement('table');
+
                 table.setAttribute('border', '1');
 
                 for (var data of obj) {
@@ -40,7 +115,26 @@
                         td.appendChild(text);
                         tr.appendChild(td);
                     }
-
+                    var td = document.createElement('td');
+                    var btns = document.createElement('button');
+                    var text =document.createTextNode('삭제');
+                    btns.appendChild(text)
+                    td.appendChild(btns);
+                    btns.onclick = function() {
+                        
+                        var del = this.parentNode.parentNode.children[0].innerHTML;
+                        var data = 'first_name=' + del;
+                        var xhtp = new XMLHttpRequest();
+                        xhtp.open('post', 'empList.do');
+                        xhtp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                        xhtp.send(data);
+                        xhtp.onreadystatechange = function (){
+                        	if (xhtp.readyState == 4 && xhtp.status == 200) {
+                        		this.parentNode.parentNode.remove();
+                        	}
+                        }
+                    };
+                    tr.appendChild(td);
                     table.appendChild(tr);
 
                 }
