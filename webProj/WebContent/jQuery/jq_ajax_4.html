@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>jq_ajax_4.html</title>
+<script src='../js/jquery-3.6.0.min.js'></script>
+
+<script>
+	
+	$(function() {
+		let $table = $('<table id="tbl" />').attr('border', '1');
+		$.ajax({
+					url : 'memberServlet.do',
+					type : 'get',
+					//data: 'p1=hello&p2=nice',
+					dataType : 'json',
+					success : function(resolve) {
+						console.log(resolve)
+						let $tr = $('<tr />')
+						let $td = $('<td />').html('아이디');
+						let $td2 = $('<td />').html('이름');
+						let $td3 = $('<td />').html('나이');
+						let $td4 = $('<td />').html('기능');
+						$tr.append($td, $td2, $td3, $td4);
+						$table.append($tr);
+						
+						for (let i = 0; i < resolve.length; i++) {
+							let $btn = $('<button />').html('삭제');
+							let $tr = $('<tr />');
+							let $td = $('<td />').html(resolve[i].id);
+							let $td2 = $('<td />').html(resolve[i].name);
+							let $td3 = $('<td />').html(resolve[i].age);
+							let $td4 = $('<td />').append($btn);
+							$btn.click(deleteRow);
+							$tr.append($td, $td2, $td3, $td4);
+							$table.append($tr);
+							
+						}
+						
+						$('#show').append($table);
+					},
+					error : function(reject) {
+						window.alert(reject.statusText);
+						console
+								.error(`에러코드: ${reject.status}, 에러메세지: ${reject.statusText}`);
+					}
+				});
+		//한건입력작업 ajax
+		$('#frm').on(
+				'submit',
+				function(e) {
+					e.preventDefault(); //기존의 submit기능 취소 서블릿페이지로 이동x
+					$.ajax({
+						url : $('#frm').attr('action'), //하나만있으면 액션의 값을 읽어온다.
+						type : 'post',
+						data : 'm_id=' + $('#m_id').val() + '&m_name='
+								+ $('#m_name').val() + '&m_age='
+								+ $('#m_age').val(),
+						dataType : 'json',
+						success : function(data) {
+							let $btn = $('<button />').html('삭제');
+							let $tr = $('<tr />');
+							let $td = $('<td />').html(data.id);
+							let $td2 = $('<td />').html(data.name);
+							let $td3 = $('<td />').html(data.age);
+							let $td4 = $('<td />').append($btn);
+							$btn.click(deleteRow);
+							$tr.append($td, $td2, $td3, $td4);
+							$table.append($tr);
+						},
+						error : function(err) {
+							console.error(err);
+						}
+					});
+				});
+	
+		function deleteRow() {
+			
+			let id = $(this).parent().parent().children().eq(0).html();
+			console.log(id)
+			let delTr = $(this).parent().parent();
+			//db에서삭제
+			$.ajax({
+				url: 'MemberDelServlet',
+				data: 'id='+id,
+				success: function() {
+					//화면삭제
+					delTr.remove();
+				},	
+				error: function() {
+					
+				}
+			});
+		}
+	});
+	
+</script>
+</head>
+<body>
+	<form id='frm' action='memberServlet.do' method='post'>
+		ID: <input type='number' name='m_id' id='m_id' value=1><br>
+		이름: <input type='text' name='m_name' id='m_name' value='hong'><br>
+		나이: <input type='number' name='m_age' id='m_age' value=20><br>
+		<input type='submit' value='저장'>
+
+	</form>
+	<div id='show'></div>
+</body>
+</html>

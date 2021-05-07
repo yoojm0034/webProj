@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jq_selec2_12.html</title>
+    <script src='../js/jquery-3.6.0.min.js'></script>
+    <script>
+        $(document).ready(function(){
+            $('#wrap p:hidden').css({
+                'display' : 'block',
+                'background':'red'
+            });
+
+            var z1 = $('#zone1 :selected').val();
+            console.log(z1);
+
+            var z2 = $('#zone2 :checked').val();
+            console.log(z2);
+
+            var z3 = $('#zone3 :checked').val();
+            console.log(z3);
+        }) 
+            
+       
+    </script>
+</head>
+
+<body>
+    <div id='wrap'>
+        <p>content1</p>
+        <p style="display: none;">content2</p>
+        <p>content3</p>
+
+    </div>
+    <form action="#">
+        <p id="'zone1">
+            <select name="course" id="course">
+                <option value="op1">op1</option>
+                <option value="op2" selected>op2</option>
+                <option value="op3">op3</option>
+            </select>
+
+        </p>
+        <p id="zone2">
+            <input type="checkbox" name="hobby1" value="독서">독서
+            <input type="checkbox" name="hobby2" value="자전거">자전거
+            <input type="checkbox" name="hobby3" value="등산" checked>등산
+        </p>
+        <p id="zone3">
+            <input type="radio" name="gender" value="male">male
+            <input type="radio" name="gender" value="female">female
+        </p>
+    </form>
+</body>
+
+</html>

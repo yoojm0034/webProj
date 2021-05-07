@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jQuery/each3.html</title>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            $.ajax({
+                url: '../MOCK_DATA.json',
+                dataType: 'json',
+                success: successCallFnc, //실행결과를 result(매개값)에 담는다.
+                error: errorCallFnc
+            }); //XMLHttpRequest();
+
+        });
+
+        function successCallFnc(result) {
+            let tbl = $('<table />');
+            tbl.attr('border', '1');
+            $.each(result, function (i, o) {
+                let trTag = $('<tr />'); //row 생성
+                trTag.attr('id', o.id);
+                trTag.mouseover(mouseoverFnc);
+                trTag.mouseout(mouseoutFnc);
+                let btn = $('<button />').html('Del');
+                btn.click((evnt) => {
+                    console.log($(this), evnt); 
+                    //$(this) => function: event 대상, arrow fnc: object
+                    evnt.currentTarget.parentNode.parentNode.remove();
+                });
+                trTag.append(
+                    $('<td />').html(o.id), //
+                    $('<td />').html(o.first_name), //
+                    $('<td />').html(o.last_name), //
+                    $('<td />').html(o.email), //
+                    $('<td />').append(btn)
+                );
+                tbl.append(trTag);
+            });
+            $('#show').append(tbl);
+
+        };
+
+        function mouseoverFnc() {
+            $(this).css('background-color', 'yellow');
+        };
+
+        function mouseoutFnc() {
+            $(this).css('background-color', '');
+        };
+
+        function errorCallFnc(reject) {
+            console.error(reject);
+        };
+
+        function clickFnc() {
+            alert($(this).attr('id')) //attr 매개값(id)이 하나면 id값을 읽어오도록한다.
+        }
+    </script>
+</head>
+
+<body>
+    <div id="show"></div>
+</body>
+
+</html>

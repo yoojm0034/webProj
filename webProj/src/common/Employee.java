@@ -8,6 +8,7 @@ public class Employee {
 	private String hireDate;
 	private String salary;
 	private String jobId;
+	private String phoneNumber;
 	
 	
 	public int getEmployeeId() {
@@ -51,6 +52,12 @@ public class Employee {
 	}
 	public void setHireDate(String hireDate) {
 		this.hireDate = hireDate;
+	}
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
 	}
 	
 	
